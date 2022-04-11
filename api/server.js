@@ -26,7 +26,7 @@ server.get('/api/users/:id', (req, res) => {
     Users.findById(req.params.id)
         .then(user => {
             if(!user){
-                res.status(404).json({ message: 'user was not found'})
+                res.status(404).json({ message: 'user was not found' })
             }else {
                 res.json(user)
             }
@@ -41,6 +41,19 @@ server.post('/api/users', (req, res) => {
     })
 })
 
+
+server.put('/api/users/:id', (req, res) => {
+    let id = req.params.id
+    let changes = req.body
+    Users.update(id, changes)
+    .then(user => {
+        if(!user){
+            res.status(404).json({ message: 'user was not found' })
+        }else {
+            res.json(user)
+        }
+    })
+})
 
 
 
