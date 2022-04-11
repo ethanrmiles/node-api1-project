@@ -26,7 +26,7 @@ server.get('/api/users/:id', (req, res) => {
     Users.findById(req.params.id)
         .then(user => {
             if(!user){
-                res.status(404).json({ message: 'user was not found' })
+                res.status(404).json({ message: 'does not exist' })
             }else {
                 res.json(user)
             }
@@ -37,7 +37,11 @@ server.post('/api/users', (req, res) => {
     let user = req.body
     Users.insert(user)
     .then(user => {
-        res.json(user)
+        if(!user.name || !user.bio){
+            res.status(400).json({ message: 'Please provide name and bio for the user' })
+        }else {
+            res.status(201).json(user)
+        }
     })
 })
 
@@ -48,9 +52,12 @@ server.put('/api/users/:id', (req, res) => {
     Users.update(id, changes)
     .then(user => {
         if(!user){
-            res.status(404).json({ message: 'user was not found' })
+            res.status(404).json({ message: 'does not exist' })
+        } else if(!req.body.name || !req.body.bio) {
+                res.status(400).json({ message: 'Please provide name and bio for the user' })
+            
         }else {
-            res.json(user)
+            res.status(201).json(user)
         }
     })
 })
@@ -60,7 +67,7 @@ server.delete('/api/users/:id', (req, res) => {
     Users.remove(req.params.id)
         .then(user => {
             if(!user){
-                res.status(444).json({ message: 'user was not found' })
+                res.status(404).json({ message: 'The user with the specified ID does not exist' })
             }else {
                 res.json(user)
             }
