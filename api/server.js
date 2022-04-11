@@ -22,6 +22,17 @@ server.get('/users', (req, res) => {
         })
 })
 
+server.get('/users/:id', (req, res) => {
+    Users.findById(req.params.id)
+        .then(user => {
+            if(!user){
+                res.status(404).json({ message: 'user was not found'})
+            }else {
+                res.json(user)
+            }
+        })
+})
+
 
 
 
