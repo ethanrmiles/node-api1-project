@@ -15,14 +15,14 @@ server.use(express.json())
 //     resetDB: [Function: resetDB]
 //   }
 
-server.get('/users', (req, res) => {
+server.get('/api/users', (req, res) => {
     Users.find()
         .then(users => {
             res.json(users)
         })
 })
 
-server.get('/users/:id', (req, res) => {
+server.get('/api/users/:id', (req, res) => {
     Users.findById(req.params.id)
         .then(user => {
             if(!user){
@@ -31,6 +31,14 @@ server.get('/users/:id', (req, res) => {
                 res.json(user)
             }
         })
+})
+
+server.post('/api/users', (req, res) => {
+    let user = req.body
+    Users.insert(user)
+    .then(user => {
+        res.json(user)
+    })
 })
 
 
